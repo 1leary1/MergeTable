@@ -10,24 +10,16 @@ public class Main {
         //    System.out.println(changesArrayList.get(i).lessonNameNew);
         //}
 
-        //ParseStable.GetStable("post.xlsx","БХ1-30","28.03.2023");
 
-        ArrayList<Stable> stableArrayList = ParseStable.GetStable("post.xlsx","ТЭМ-50","28.03.2023");
-        stableArrayList.get(0);
 
-        System.out.println("гр: " + stableArrayList.get(0).group);
-        System.out.println("номерпры: " + stableArrayList.get(0).lessonNumber);
-        System.out.println("пг: " + stableArrayList.get(0).pg);
-        System.out.println("пред: " + stableArrayList.get(0).lessonName);
-        System.out.println("Препод: " + stableArrayList.get(0).teacher);
-        System.out.println("каб: " + stableArrayList.get(0).cabinet + "\n \n");
+        ArrayList<Stable> stableArrayList = ParseStable.GetStable("post.xlsx","БХ1-30","28.03.2023");
 
-        System.out.println("гр: " + stableArrayList.get(1).group);
-        System.out.println("номерпры: " + stableArrayList.get(1).lessonNumber);
-        System.out.println("пг: " + stableArrayList.get(1).pg);
-        System.out.println("пред: " + stableArrayList.get(1).lessonName);
-        System.out.println("Препод: " + stableArrayList.get(1).teacher);
-        System.out.println("каб: " + stableArrayList.get(1).cabinet);
+        for (int i = 0; i < stableArrayList.size(); i++){
+            System.out.println("Пара: " + stableArrayList.get(i).lessonNumber);
+            System.out.println("Пг: " + stableArrayList.get(i).pg);
+            System.out.println("Пара: " + stableArrayList.get(i).lessonName + "\n");
+        }
+
         //БХ1-30
     }
 }

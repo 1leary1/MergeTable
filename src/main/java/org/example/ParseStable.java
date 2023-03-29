@@ -18,6 +18,8 @@ public class ParseStable {
             Workbook workbook = WorkbookFactory.create(file);
             Sheet sheet = workbook.getSheetAt(0);
 
+            int cdi;
+
             //итерация групп
             for (int i = 5; sheet.getRow(i) != null; i++){
                 Row row = sheet.getRow(i);
@@ -27,21 +29,29 @@ public class ParseStable {
                     if (group.equals(cell.getRichStringCellValue().getString().trim())) {
                         System.out.println(cell);
 
-                        //проверка на пг
-                        if(!row.getCell(5).toString().equals("")){
 
-                            //1 пг
-                            if (row.getCell(3) != null){
-                                stableList.add(new Stable(cell, row.getCell(1), 1, row.getCell(4), sheet.getRow(i+1).getCell(4),row.getCell(5)));
+                        for (int j = 0; j < 12; j += 2){
+
+                            //проверка на пг
+                            if(!sheet.getRow(i + j).getCell(5).toString().equals("")){
+
+                                //1 пг
+                                if (sheet.getRow(i + j).getCell(3) != null){
+                                    stableList.add(new Stable(cell, sheet.getRow(i + j).getCell(1), "1",
+                                            sheet.getRow(i + j).getCell(4), sheet.getRow(i+j+1).getCell(4), sheet.getRow(i + j).getCell(5)));
+                                }
+                                //2 пг
+                                if (sheet.getRow(i + j).getCell(6) != null){
+                                    stableList.add(new Stable(cell, sheet.getRow(i + j).getCell(1),
+                                            "2", sheet.getRow(i + j).getCell(6), sheet.getRow(i+j+1).getCell(6), sheet.getRow(i + j).getCell(7)));
+                                }
+                            } else { //общая пара
+                                String pg = "0";
+                                if (sheet.getRow(i + j).getCell(7).toString().equals("")) pg = "";
+                                stableList.add(new Stable(cell, sheet.getRow(i + j).getCell(1), pg, sheet.getRow(i + j).getCell(4),
+                                        sheet.getRow(i+j+1).getCell(4), sheet.getRow(i + j).getCell(7)));
                             }
-                            //2 пг
-                            if (row.getCell(6) != null){
-                                stableList.add(new Stable(cell, row.getCell(1), 2, row.getCell(6), sheet.getRow(i+1).getCell(6),row.getCell(7)));
-                            }
-                        } else {
-                            stableList.add(new Stable(cell, row.getCell(1), 0, row.getCell(4), sheet.getRow(i+1).getCell(4),row.getCell(7)));
                         }
-
                         break;
                     }
                 }
