@@ -4,15 +4,8 @@ import java.util.ArrayList;
 
 public class Main {
     public static void main(String[] args) {
-        //ArrayList<Changes> changesArrayList = ParseChanges.GetChaiges("izm.xlsx", "ТЭМ-50", "28.03.2023");
-        //
-        //for (int i = 0; i < changesArrayList.size(); i++){
-        //    System.out.println(changesArrayList.get(i).lessonNameNew);
-        //}
 
-
-
-        ArrayList<Stable> stableArrayList = ParseStable.GetStable("post.xlsx","ТЭМ-50","30.03.2023");
+        ArrayList<Stable> stableArrayList = ParseStable.GetStable("post.xlsx","ТЭМ-51","28.03.2023");
 
         for (int i = 0; i < stableArrayList.size(); i++){
             System.out.println("Пара: " + stableArrayList.get(i).lessonNumber);

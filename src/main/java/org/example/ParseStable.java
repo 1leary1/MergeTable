@@ -33,11 +33,15 @@ public class ParseStable {
             int dayOfWeek = cal.get(Calendar.DAY_OF_WEEK);
             boolean mod = cal.get(Calendar.WEEK_OF_YEAR)%2==0;
 
-            int coord = (dayOfWeek-2) * 4;
+            int coordOb = (dayOfWeek-2) * 5;
 
-            if (!mod){
-                coord = (dayOfWeek-2) * 8;
+            System.out.println(coordOb);
+
+            if (mod){
+                coordOb = (dayOfWeek-2) * 5;
             }
+
+            System.out.println(coordOb);
 
             //итерация групп
             for (int i = 5; sheet.getRow(i) != null; i++){
@@ -56,25 +60,29 @@ public class ParseStable {
 
                                 //1 пг
                                 if (sheet.getRow(i + j).getCell(3) != null){
-                                    stableList.add(new Stable(cell, sheet.getRow(i + j).getCell(1), "1",
-                                            sheet.getRow(i + j).getCell(4),
-                                            sheet.getRow(i+j+1).getCell(4),
-                                            sheet.getRow(i + j).getCell(5)));
+                                    String pg = "1";
+                                    if (sheet.getRow(i + j).getCell(5).toString().equals("")) pg = "";
+                                    stableList.add(new Stable(cell, sheet.getRow(i + j).getCell(1), pg,
+                                            sheet.getRow(i + j).getCell(4 + coordOb),
+                                            sheet.getRow(i+j+1).getCell(4 + coordOb),
+                                            sheet.getRow(i + j).getCell(5 + coordOb)));
                                 }
                                 //2 пг
                                 if (sheet.getRow(i + j).getCell(6) != null){
-                                    stableList.add(new Stable(cell, sheet.getRow(i + j).getCell(1), "2",
-                                            sheet.getRow(i + j).getCell(6),
-                                            sheet.getRow(i+j+1).getCell(6),
-                                            sheet.getRow(i + j).getCell(7)));
+                                    String pg = "2";
+                                    if (sheet.getRow(i + j).getCell(7).toString().equals("")) pg = "";
+                                    stableList.add(new Stable(cell, sheet.getRow(i + j).getCell(1), pg,
+                                            sheet.getRow(i + j).getCell(6 + coordOb),
+                                            sheet.getRow(i+j+1).getCell(6 + coordOb),
+                                            sheet.getRow(i + j).getCell(7 + coordOb)));
                                 }
                             } else { //общая пара
                                 String pg = "0";
-                                if (sheet.getRow(i + j).getCell(7 + coord).toString().equals("")) pg = "";
+                                if (sheet.getRow(i + j).getCell(7 + coordOb).toString().equals("")) pg = "";
                                 stableList.add(new Stable(cell, sheet.getRow(i + j).getCell(1), pg,
-                                        sheet.getRow(i + j).getCell(4 + (4 * 4)),
-                                        sheet.getRow(i+j+1).getCell(4 + (4 * 4)),
-                                        sheet.getRow(i + j).getCell(7 + (4 * 4))));
+                                        sheet.getRow(i + j).getCell(4 + coordOb),
+                                        sheet.getRow(i+j+1).getCell(4 + coordOb),
+                                        sheet.getRow(i + j).getCell(7 + coordOb)));
                             }
                         }
                         break;
