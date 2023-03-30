@@ -12,7 +12,7 @@ public class Main {
 
 
 
-        ArrayList<Stable> stableArrayList = ParseStable.GetStable("post.xlsx","БХ1-30","28.03.2023");
+        ArrayList<Stable> stableArrayList = ParseStable.GetStable("post.xlsx","ТЭМ-50","30.03.2023");
 
         for (int i = 0; i < stableArrayList.size(); i++){
             System.out.println("Пара: " + stableArrayList.get(i).lessonNumber);

@@ -6,7 +6,12 @@ import org.apache.poi.ss.usermodel.*;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
+import java.util.GregorianCalendar;
 
 public class ParseStable {
 
@@ -18,7 +23,21 @@ public class ParseStable {
             Workbook workbook = WorkbookFactory.create(file);
             Sheet sheet = workbook.getSheetAt(0);
 
-            int cdi;
+            SimpleDateFormat ft = new SimpleDateFormat("dd.MM.yyyy");
+            Date dateR = ft.parse(date);
+
+            Calendar cal = new GregorianCalendar();
+
+            cal.setTime(dateR);
+
+            int dayOfWeek = cal.get(Calendar.DAY_OF_WEEK);
+            boolean mod = cal.get(Calendar.WEEK_OF_YEAR)%2==0;
+
+            int coord = (dayOfWeek-2) * 4;
+
+            if (!mod){
+                coord = (dayOfWeek-2) * 8;
+            }
 
             //итерация групп
             for (int i = 5; sheet.getRow(i) != null; i++){
@@ -38,18 +57,24 @@ public class ParseStable {
                                 //1 пг
                                 if (sheet.getRow(i + j).getCell(3) != null){
                                     stableList.add(new Stable(cell, sheet.getRow(i + j).getCell(1), "1",
-                                            sheet.getRow(i + j).getCell(4), sheet.getRow(i+j+1).getCell(4), sheet.getRow(i + j).getCell(5)));
+                                            sheet.getRow(i + j).getCell(4),
+                                            sheet.getRow(i+j+1).getCell(4),
+                                            sheet.getRow(i + j).getCell(5)));
                                 }
                                 //2 пг
                                 if (sheet.getRow(i + j).getCell(6) != null){
-                                    stableList.add(new Stable(cell, sheet.getRow(i + j).getCell(1),
-                                            "2", sheet.getRow(i + j).getCell(6), sheet.getRow(i+j+1).getCell(6), sheet.getRow(i + j).getCell(7)));
+                                    stableList.add(new Stable(cell, sheet.getRow(i + j).getCell(1), "2",
+                                            sheet.getRow(i + j).getCell(6),
+                                            sheet.getRow(i+j+1).getCell(6),
+                                            sheet.getRow(i + j).getCell(7)));
                                 }
                             } else { //общая пара
                                 String pg = "0";
-                                if (sheet.getRow(i + j).getCell(7).toString().equals("")) pg = "";
-                                stableList.add(new Stable(cell, sheet.getRow(i + j).getCell(1), pg, sheet.getRow(i + j).getCell(4),
-                                        sheet.getRow(i+j+1).getCell(4), sheet.getRow(i + j).getCell(7)));
+                                if (sheet.getRow(i + j).getCell(7 + coord).toString().equals("")) pg = "";
+                                stableList.add(new Stable(cell, sheet.getRow(i + j).getCell(1), pg,
+                                        sheet.getRow(i + j).getCell(4 + (4 * 4)),
+                                        sheet.getRow(i+j+1).getCell(4 + (4 * 4)),
+                                        sheet.getRow(i + j).getCell(7 + (4 * 4))));
                             }
                         }
                         break;
@@ -64,7 +89,10 @@ public class ParseStable {
             System.out.println("ошипка иое");
         } catch (InvalidFormatException e) {
             System.out.println("ошипка инвалид");
+        } catch (ParseException e) {
+            e.printStackTrace();
         }
+
         return stableList;
     }
 }
